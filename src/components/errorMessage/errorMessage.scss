@@ -1,0 +1,20 @@
+@import '../../style/variables.scss';
+.error{
+    padding: 10px;
+    display: grid;
+    grid-template-columns: auto 148px;
+    background-color: rgb(247, 247, 247);
+    span{
+        font-weight: bold;
+        font-size: 40px;
+        color: $dark;
+        align-self: center;
+        text-align: center;
+    }
+    img{
+        width: auto;
+        height: 240px;
+        object-fit:cover;
+        transform: translate(10px);
+    }
+}
