@@ -15,7 +15,7 @@ const CharList = (props) => {
 
     const service = new MarvelService();
     let itemRefs = useRef([]);
-
+    // eslint-disable-next-line
     useEffect(() => onRequest(),[])
 
     const onRequest = (offset) => {

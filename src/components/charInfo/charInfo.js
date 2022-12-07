@@ -12,7 +12,7 @@ const CharInfo = (props) =>{
     const [error, setError] = useState(false);
 
     const marvelService = new MarvelService();
-
+    // eslint-disable-next-line
     useEffect(() => {updateChar()},[props.charId])
 
     const updateChar = () => {
