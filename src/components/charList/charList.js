@@ -14,7 +14,6 @@ const CharList = (props) => {
     const[charEnded, setCharEnded] = useState(false);
 
     const service = new MarvelService();
-
     let itemRefs = useRef([]);
 
     useEffect(() => onRequest(),[])
