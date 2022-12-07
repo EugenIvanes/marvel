@@ -44,6 +44,7 @@ const RandomChar = () =>{
         if(new Date().getTime() / 1000 - time >= 86400){
             updateChar(true)
         };
+        
         onCharLoading();
         marvelService
             .getCharacter(id)
