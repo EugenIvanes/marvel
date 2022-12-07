@@ -1,4 +1,4 @@
-import { Component } from 'react';
+import React, { Component } from 'react';
 import './charList.scss';
 import MarvelService from '../../services/services';
 import Spinner from '../spinner/spinner';
@@ -14,13 +14,18 @@ class CharList extends Component {
         offset: 1541,
         charEnded: false,
     }
-
+    
     service = new MarvelService();
+
+    itemRefs = [];
+
+    setInputRef = ref => {
+        this.itemRefs.push(ref);
+    }
 
     componentDidMount(){
         this.onRequest();
     }
-
 
     onRequest = (offset) => {
         this.onCharListLoading();
@@ -53,15 +58,24 @@ class CharList extends Component {
         this.setState({loading: false, error: true});
     }
 
+    focusOnItem = (id) => {
+        this.itemRefs.forEach(item => item.classList.remove('char__item_selected'));
+        this.itemRefs[id].classList.add('char__item_selected');
+        this.itemRefs[id].focus();
+
+    }
+
     renderItem = (arr) =>{
-        const item = arr.map(({id, thumbnail, name}) => {
+        const item = arr.map(({id, thumbnail, name}, index) => {
             let imgStyle = {objectFit:'cover'};
             if(thumbnail === 'http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available.jpg'){
                 imgStyle = {objectFit:'unset'};
             }
             return(
-                <li key={id} className="char__item" onClick={(e) => {
+                <li key={id} ref={this.setInputRef} className="char__item" onClick={(e) => {
                     this.props.onCharSelected(id);
+                    console.log(index);
+                    this.focusOnItem(index);
                     // e.target.classList.add('char__item_selected');
                     }}>
                     <img src={thumbnail} style={imgStyle} alt="abyss"/>
@@ -82,6 +96,7 @@ class CharList extends Component {
         const {charList, loading, error, newItemLoading, offset, charEnded} = this.state;
         const spinner = loading ? <Spinner/> : null;
         const content = this.renderItem(charList);
+        console.log(content);
         const errorMessage = error ? <ErrorMessage/> : null;
         return(
             <div className="char__list">
