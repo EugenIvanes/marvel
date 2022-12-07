@@ -18,7 +18,6 @@ const CharInfo = (props) =>{
     const updateChar = () => {
         const {charId} = props
         if(!charId) return;
-
         onCharsLoading();
         marvelService
         .getCharacter(charId)
@@ -42,7 +41,6 @@ const CharInfo = (props) =>{
         setError(false);
     }
 
-     
     const skeleton = char || error || loading ? null : <Skeleton/>;
     const spinner = loading ? <Spinner/> : null;
     const errorMessage = error ? <ErrorMessage/> : null;
