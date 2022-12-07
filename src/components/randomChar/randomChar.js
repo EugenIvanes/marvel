@@ -37,9 +37,13 @@ const RandomChar = () =>{
 
     const updateChar = (random = false) => {
         if(!localStorage.getItem('_id') || random){
-            localStorage.setItem('_id', ((Math.random()*699) + 1010801).toFixed());
+            localStorage.setItem('_id', JSON.stringify([((Math.random()*699) + 1010801).toFixed(), new Date().getTime() / 1000]));
         }
-        const id = localStorage.getItem('_id');
+        const [id, time] = JSON.parse(localStorage.getItem('_id'));
+
+        if(new Date().getTime() / 1000 - time >= 86400){
+            updateChar(true)
+        };
         onCharLoading();
         marvelService
             .getCharacter(id)
@@ -47,7 +51,6 @@ const RandomChar = () =>{
             .catch(onError);
     }
     
- 
     const errorMessage = error ? <ErrorMessage/> : null;
     const spinner = loading ? <Spinner/> : null;
     const content = !(error || loading) ? <View char={char}/> : null;
@@ -67,7 +70,6 @@ const RandomChar = () =>{
             </div>
         </section>  
     )
-    
 }
 
 const View = ({char}) => {
@@ -91,7 +93,7 @@ const View = ({char}) => {
                     <a href={wiki} className="button button__secondary">
                         <div className="inner">Wiki</div>
                     </a>
-                </div>
+                </div> 
             </div>
         </div>
     )
