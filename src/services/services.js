@@ -1,25 +1,17 @@
-class MarvelService{
-    _url = "https://gateway.marvel.com:443/v1/public/characters";
-    _apikey = "apikey=1fdfb79ae5e68db075ac64fd115201b1";
-    _offset = 0;
+import {useHttp} from '../hooks/http.hook';
+const useMarvelService = () => {
+    const {loading, request, error} = useHttp();
 
-    getResurce = async(url)=>{
-        let res = await fetch(url);
-        if(!res.ok){
-            throw new Error('error fetching');
-        }
-        return await res.json();
-    };
-    getAllCharacters = async (offset = this._offset) => {
-        const res = await this.getResurce(`${this._url}?limit=9&offset=${offset}&${this._apikey}`);
-        return res.data.results.map(this._transformCharactersForAllChar);
+    const getAllCharacters = async (offset = process.env.REACT_APP_OFFSET) => {
+        const res = await request(`${process.env.REACT_APP_API_URL}?limit=9&offset=${offset}&${process.env.REACT_APP_API_KEY}`);
+        return res.data.results.map(_transformCharactersForAllChar);
     }
-    getCharacter = async (id) => {
-        const res = await this.getResurce(`${this._url}/${id}?${this._apikey}`);
-        return this._transformCharacter(res.data.results[0]);
+    const getCharacter = async (id) => {
+        const res = await request(`${process.env.REACT_APP_API_URL}/${id}?${process.env.REACT_APP_API_KEY}`);
+        return _transformCharacter(res.data.results[0]);
     }
 
-    _transformCharacter = (res) => {
+    const _transformCharacter = (res) => {
         return{
             name: res.name,
             description: res.description,
@@ -29,13 +21,14 @@ class MarvelService{
             comics: res.comics.items
         }
     }
-    _transformCharactersForAllChar = (res) => {
+    const _transformCharactersForAllChar = (res) => {
         return{
             id: res.id,
             name: res.name,
             thumbnail: res.thumbnail.path + '.' + res.thumbnail.extension
         }
     }
-    _
+    return {loading, error, getAllCharacters, getCharacter};
 }
-export default MarvelService;
+
+export default useMarvelService;

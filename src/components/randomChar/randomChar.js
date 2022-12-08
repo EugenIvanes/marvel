@@ -3,14 +3,12 @@ import decoration from '../../resources/img/Decoration.png'
 import {useState, useEffect} from 'react'
 import Spinner from '../spinner/spinner';
 import ErrorMessage from '../errorMessage/ErrorMessage';
-import MarvelService from '../../services/services';
+import useMarvelService from '../../services/services';
 
 const RandomChar = () =>{
     const[char, setChar] = useState({});
-    const[loading, setLoading] = useState(true);
-    const[error, setError] = useState(false);
 
-    const marvelService = new MarvelService();
+    const {loading, error, getCharacter} = useMarvelService();
 
     // eslint-disable-next-line
     useEffect(() => updateChar(),[])
@@ -21,18 +19,6 @@ const RandomChar = () =>{
             char.description = "Description is empty";
         }
         setChar(char);
-        setLoading(false);
-        setError(false);
-    }
-
-    const onCharLoading = () => { 
-        setLoading(true);
-        setError(false);
-    }
-
-    const onError = () => {
-        setLoading(false);
-        setError(true);
     }
 
     const updateChar = (random = false) => {
@@ -44,12 +30,7 @@ const RandomChar = () =>{
         if(new Date().getTime() / 1000 - time >= 86400){
             updateChar(true)
         };
-        
-        onCharLoading();
-        marvelService
-            .getCharacter(id)
-            .then(onCharLoaded)
-            .catch(onError);
+        getCharacter(id).then(onCharLoaded);
     }
     
     const errorMessage = error ? <ErrorMessage/> : null;
