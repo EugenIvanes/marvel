@@ -8,7 +8,7 @@ import useMarvelService from '../../services/services';
 const RandomChar = () =>{
     const[char, setChar] = useState({});
 
-    const {loading, error, getCharacter} = useMarvelService();
+    const {loading, error, getCharacter, clearError} = useMarvelService();
 
     // eslint-disable-next-line
     useEffect(() => updateChar(),[])
@@ -22,6 +22,7 @@ const RandomChar = () =>{
     }
 
     const updateChar = (random = false) => {
+        clearError();
         if(!localStorage.getItem('_id') || random){
             localStorage.setItem('_id', JSON.stringify([((Math.random()*699) + 1010801).toFixed(), new Date().getTime() / 1000]));
         }

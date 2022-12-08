@@ -1,6 +1,6 @@
 import {useHttp} from '../hooks/http.hook';
 const useMarvelService = () => {
-    const {loading, request, error} = useHttp();
+    const {loading, request, error, clearError} = useHttp();
 
     const getAllCharacters = async (offset = process.env.REACT_APP_OFFSET) => {
         const res = await request(`${process.env.REACT_APP_API_URL}?limit=9&offset=${offset}&${process.env.REACT_APP_API_KEY}`);
@@ -28,7 +28,7 @@ const useMarvelService = () => {
             thumbnail: res.thumbnail.path + '.' + res.thumbnail.extension
         }
     }
-    return {loading, error, getAllCharacters, getCharacter};
+    return {loading, error, getAllCharacters, getCharacter, clearError};
 }
 
 export default useMarvelService;
