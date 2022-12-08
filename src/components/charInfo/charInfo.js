@@ -3,42 +3,25 @@ import Spinner from '../spinner/spinner';
 import Skeleton from '../skeleton/skeleton';
 import ErrorMessage from '../errorMessage/ErrorMessage';
 import './charInfo.scss';
-import MarvelService from '../../services/services';
+import useMarvelService from '../../services/services';
 import PropTypes from 'prop-types';
 
 const CharInfo = (props) =>{
     const [char, setChar] = useState(null);
-    const [loading, setLoaging] = useState(false);
-    const [error, setError] = useState(false);
 
-    const marvelService = new MarvelService();
+    const {loading, error, getCharacter} = useMarvelService();
     // eslint-disable-next-line
     useEffect(() => {updateChar()},[props.charId])
 
     const updateChar = () => {
-        const {charId} = props
+        const {charId} = props;
         if(!charId) return;
-        onCharsLoading();
-        marvelService
-        .getCharacter(charId)
-        .then(onCharsLoaded)
-        .catch(onError);
-    }
-
-    const onError = () => {
-        setLoaging(false);
-        setError(true);
-    }
-
-    const onCharsLoading = () => {
-        setLoaging(true);
-        setError(false);
+        getCharacter(charId)
+            .then(onCharsLoaded);
     }
 
     const onCharsLoaded = (char)=> {
         setChar(char);
-        setLoaging(false);
-        setError(false);
     }
 
     const skeleton = char || error || loading ? null : <Skeleton/>;
