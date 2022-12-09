@@ -40,6 +40,11 @@ const CharList = (props) => {
         itemRefs.current[id].focus();
     }
 
+    const sesionChar = (id) => {
+        sessionStorage.setItem('id', JSON.stringify({charId:id}));
+        return id;
+    }
+
     function renderItem(arr){
         const item = arr.map(({id, thumbnail, name}, index) => {
             let imgStyle = {objectFit:'cover'};
@@ -48,7 +53,7 @@ const CharList = (props) => {
             }
             return(
                 <li key={id} ref={el => itemRefs.current[index] = el} className="char__item" onClick={(e) => {
-                    props.onCharSelected(id);
+                    props.onCharSelected(sesionChar(id));
                     focusOnItem(index);
                     }}>
                     <img src={thumbnail} style={imgStyle} alt="abyss"/>
