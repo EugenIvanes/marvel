@@ -15,7 +15,7 @@ const CharInfo = (props) =>{
     useEffect(() => {updateChar()},[props.charId])
 
     const updateChar = () => {
-        const {charId} = props;
+        const {charId} = JSON.parse(sessionStorage.getItem('id')) ? JSON.parse(sessionStorage.getItem('id')) : props;
         if(!charId) return;
         clearError();
         getCharacter(charId)

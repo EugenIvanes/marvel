@@ -1,10 +1,11 @@
 import './singleComicPage.scss';
 import { useParams , useNavigate} from 'react-router-dom';
 import useMarvelService from '../../services/services';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import Spinner from '../spinner/spinner';
 import ErrorMessage from '../errorMessage/ErrorMessage';
-// import x_men from '../../resources/img/x-men.png'
+import ImageViewer from 'react-simple-image-viewer';
+
 const SingleComicPage = () =>{
     const {comicId} = useParams();
     const [comic, setComic] = useState(null);
@@ -36,26 +37,51 @@ const SingleComicPage = () =>{
 
 const View = ({comic, navigate}) => {
     const {title, thumbnail, description, pages, price, language} = comic;
+    const [isViewerOpen, setIsViewerOpen] = useState(false);
 
-    let imgStyle = {objectFit:'cover'};
+    const openImageViewer = useCallback(() => {
+        setIsViewerOpen(true);
+    }, []);
+
+    const closeImageViewer = () => {
+        setIsViewerOpen(false);
+    };
+
+    let imgStyle = {objectFit:'cover', cursor: 'pointer'};
     if(thumbnail === 'http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available.jpg'){
-        imgStyle = {objectFit:'unset'};
+        imgStyle = {objectFit:'unset', cursor: 'pointer'};
     }
 
+    const imageViewer = isViewerOpen ? <SimpleImageViewer img={thumbnail} closeImageViewer={closeImageViewer}/> : null;
+
     return(
-        <div className="single-comics">
-            <img src={thumbnail} style={imgStyle} alt={title}/>
-            <div className="single-comics__info">
-                <div className="single-comics__name">{title}</div>
-                <div className="single-comics__descr">{description}</div>
-                <div className="single-comics__descr">{`${pages} ${pages > 1 ? "pages" : "page"}`}</div>
-                <div className="single-comics__descr">Language: {language}</div>
-                <div className="single-comics__price">{price}</div>
+        <>
+            <div className="single-comics">
+                <img src={thumbnail} style={imgStyle} onClick={ () => openImageViewer() } alt={title}/>
+                <div className="single-comics__info">
+                    <div className="single-comics__name">{title}</div>
+                    <div className="single-comics__descr">{description}</div>
+                    <div className="single-comics__descr">{`${pages} ${pages > 1 ? "pages" : "page"}`}</div>
+                    <div className="single-comics__descr">Language: {language}</div>
+                    <div className="single-comics__price">{price}</div>
+                </div>
+                <div className="single-comics__back">
+                    <b onClick={()=>navigate(-1)}>Back</b>
+                </div>
             </div>
-            <div className="single-comics__back">
-                <b onClick={()=>navigate(-1)}>Back</b>
-            </div>
-        </div>
+            {imageViewer}
+        </>
+    )
+}
+
+const SimpleImageViewer = ({img, closeImageViewer}) => {
+    return(
+        <ImageViewer
+          src={[img]}
+          disableScroll={ true }
+          closeOnClickOutside={ true }
+          onClose={ closeImageViewer }
+        />
     )
 }
 
