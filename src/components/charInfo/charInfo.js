@@ -5,6 +5,7 @@ import ErrorMessage from '../errorMessage/ErrorMessage';
 import './charInfo.scss';
 import useMarvelService from '../../services/services';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 
 const CharInfo = (props) =>{
     const [char, setChar] = useState(null);
@@ -42,7 +43,7 @@ const CharInfo = (props) =>{
 }
 
 const View = ({char}) => {
-    const {name, description, thumbnail, homepage, wiki, comics} = char;
+    const {id, name, description, thumbnail, homepage, wiki, comics} = char;
     let imgStyle = {objectFit:'cover'};
     if(thumbnail === 'http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available.jpg'){
         imgStyle = {objectFit:'contain'};
@@ -74,7 +75,7 @@ const View = ({char}) => {
                         // eslint-disable-next-line
                         if (i > 9) return;
                         return(
-                            <li key={i} className="char__comics-item">{item.name}</li>
+                            <li key={id[i]} className="char__comics-item"><Link to={`/comics/${id[i]}`}>{item.name}</Link></li>
                         )
                     })
                 }

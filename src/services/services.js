@@ -19,7 +19,9 @@ const useMarvelService = () => {
         return _transformComic(res.data.results[0]);
     }
     const _transformCharacter = (res) => {
+        const id = res.comics.items.map(item => item.resourceURI.slice(item.resourceURI.search(/[/]\d/g)+1));      
         return{
+            id: id,
             name: res.name,
             description: res.description,
             thumbnail: res.thumbnail.path + '.' + res.thumbnail.extension,
@@ -44,7 +46,6 @@ const useMarvelService = () => {
         }
     }
     const _transformComic = (res) => {
-        console.log(res);
         return{
             id: res.id,
             title: res.title,

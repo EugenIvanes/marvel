@@ -1,5 +1,5 @@
 import './singleComicPage.scss';
-import { useParams, Link } from 'react-router-dom';
+import { useParams , useNavigate} from 'react-router-dom';
 import useMarvelService from '../../services/services';
 import { useEffect, useState } from 'react';
 import Spinner from '../spinner/spinner';
@@ -9,12 +9,12 @@ const SingleComicPage = () =>{
     const {comicId} = useParams();
     const [comic, setComic] = useState(null);
     const {loading, error, getComic, clearError} = useMarvelService();
+    const navigate = useNavigate();
     // eslint-disable-next-line
     useEffect(() =>onRequest(),[comicId])
 
     const onRequest = () => {
         clearError();
-        console.log(comicId);
         getComic(comicId).then(onComicLoaded);
     }
 
@@ -24,7 +24,7 @@ const SingleComicPage = () =>{
 
     const spinner = loading ? <Spinner/> : null;
     const errorMessage = error ? <ErrorMessage/> : null;
-    const content = !(loading || error || !comic) ? <View comic={comic}/> : null;
+    const content = !(loading || error || !comic) ? <View comic={comic} navigate={navigate}/> : null;
     return(
         <>
             {spinner}
@@ -34,11 +34,17 @@ const SingleComicPage = () =>{
     )
 }
 
-const View = ({comic}) => {
+const View = ({comic, navigate}) => {
     const {title, thumbnail, description, pages, price, language} = comic;
+
+    let imgStyle = {objectFit:'cover'};
+    if(thumbnail === 'http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available.jpg'){
+        imgStyle = {objectFit:'unset'};
+    }
+
     return(
         <div className="single-comics">
-            <img src={thumbnail} alt={title}/>
+            <img src={thumbnail} style={imgStyle} alt={title}/>
             <div className="single-comics__info">
                 <div className="single-comics__name">{title}</div>
                 <div className="single-comics__descr">{description}</div>
@@ -47,7 +53,7 @@ const View = ({comic}) => {
                 <div className="single-comics__price">{price}</div>
             </div>
             <div className="single-comics__back">
-                <Link to="/comics">Back to all</Link>
+                <b onClick={()=>navigate(-1)}>Back</b>
             </div>
         </div>
     )
