@@ -1,7 +1,7 @@
 import './singleComicPage.scss';
 import { useParams , useNavigate} from 'react-router-dom';
 import useMarvelService from '../../services/services';
-import { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState } from 'react';
 import Spinner from '../spinner/spinner';
 import ErrorMessage from '../errorMessage/ErrorMessage';
 import ImageViewer from 'react-simple-image-viewer';
@@ -39,12 +39,8 @@ const View = ({comic, navigate}) => {
     const {title, thumbnail, description, pages, price, language} = comic;
     const [isViewerOpen, setIsViewerOpen] = useState(false);
 
-    const openImageViewer = useCallback(() => {
-        setIsViewerOpen(true);
-    }, []);
-
-    const closeImageViewer = () => {
-        setIsViewerOpen(false);
+    const toggleImageViewer = () => {
+        setIsViewerOpen(isViewerOpen => !isViewerOpen);
     };
 
     let imgStyle = {objectFit:'cover', cursor: 'pointer'};
@@ -52,12 +48,12 @@ const View = ({comic, navigate}) => {
         imgStyle = {objectFit:'unset', cursor: 'pointer'};
     }
 
-    const imageViewer = isViewerOpen ? <SimpleImageViewer img={thumbnail} closeImageViewer={closeImageViewer}/> : null;
+    const imageViewer = isViewerOpen ? <SimpleImageViewer img={thumbnail} closeImageViewer={toggleImageViewer}/> : null;
 
     return(
         <>
             <div className="single-comics">
-                <img src={thumbnail} style={imgStyle} onClick={ () => openImageViewer() } alt={title}/>
+                <img src={thumbnail} style={imgStyle} onClick={ () => toggleImageViewer() } alt={title}/>
                 <div className="single-comics__info">
                     <div className="single-comics__name">{title}</div>
                     <div className="single-comics__descr">{description}</div>
