@@ -30,7 +30,7 @@ const CharList = (props) => {
         }
         setCharList(charList => [...charList, ...newCharList]);
         setNewItemLoading(false);
-        setOffset(offset => offset + 120);
+        setOffset(offset => offset + 9);
         setCharEnded(ended);
     }
 
