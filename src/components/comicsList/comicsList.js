@@ -3,13 +3,14 @@ import useMarvelService from '../../services/services';
 import Spinner from '../spinner/spinner';
 import ErrorMessage from '../errorMessage/ErrorMessage';
 import { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 const ComicsList = () => {
     const[comicsList, setComicsList]= useState([]);
     const[offset, setoffset] = useState(1);
     const[newItemLoading, setNewItemLoading] = useState(false);
     const[ended, setended] = useState(false);
-    const {loading,error,getAllComics} = useMarvelService();
-    
+    const {loading, error, getAllComics} = useMarvelService();
+
     // eslint-disable-next-line
     useEffect(() => onRequest(offset, true),[])
 
@@ -33,11 +34,11 @@ const ComicsList = () => {
         const item = arr.map(({id, title, thumbnail})=>{
             return (
                 <li key={id} className="comics__item">
-                    <a href="comics-info.html">
+                    <Link to={`/comics/${id}`}>
                         <img src={thumbnail} alt={title}/> 
                         <div className="comics__item-name">{title}</div>
                         <div className="comics__item-price">NOT AVAILABLE</div>
-                    </a>
+                    </Link>
                 </li>
             )
         })

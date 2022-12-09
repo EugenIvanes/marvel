@@ -10,10 +10,13 @@ const useMarvelService = () => {
         const res = await request(`${process.env.REACT_APP_API_CHARACTER_URL}/${id}?${process.env.REACT_APP_API_KEY}`);
         return _transformCharacter(res.data.results[0]);
     }
-
     const getAllComics = async (offset = process.env.REACT_APP_OFFSET) => {
         const res = await request(`${process.env.REACT_APP_API_COMICS_URL}?limit=8&offset=${offset}&${process.env.REACT_APP_API_KEY}`);
-        return res.data.results.map(_transformComicsForAllChar);
+        return res.data.results.map(_transformComicsForAll);
+    }
+    const getComic = async(id) => {
+        const res = await request(`${process.env.REACT_APP_API_COMICS_URL}/${id}?${process.env.REACT_APP_API_KEY}`)
+        return _transformComic(res.data.results[0]);
     }
     const _transformCharacter = (res) => {
         return{
@@ -32,14 +35,27 @@ const useMarvelService = () => {
             thumbnail: res.thumbnail.path + '.' + res.thumbnail.extension
         }
     }
-    const _transformComicsForAllChar = (res) => {
+    
+    const _transformComicsForAll = (res) => {
         return{
             id: res.id,
             title: res.title,
             thumbnail: res.thumbnail.path + '.' + res.thumbnail.extension
         }
     }
-    return {loading, error, getAllCharacters, getCharacter, clearError, getAllComics};
+    const _transformComic = (res) => {
+        console.log(res);
+        return{
+            id: res.id,
+            title: res.title,
+            pages: res.pageCount,
+            description: res.description || "Description is empty",
+            price: res.prices[0].price ? res.prices[0].price+"$" : "Price is not",
+            thumbnail: res.thumbnail.path + '.' + res.thumbnail.extension,
+            language: res.textObjects.language || "en-us"
+        }
+    }
+    return {loading, error, getAllCharacters, getCharacter, clearError, getAllComics, getComic};
 }
 
 export default useMarvelService;
