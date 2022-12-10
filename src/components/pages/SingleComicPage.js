@@ -43,9 +43,9 @@ const View = ({comic, navigate}) => {
         setIsViewerOpen(isViewerOpen => !isViewerOpen);
     };
 
-    let imgStyle = {objectFit:'cover', cursor: 'pointer'};
+    let imgStyle = {objectFit:'cover'};
     if(thumbnail === 'http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available.jpg'){
-        imgStyle = {objectFit:'unset', cursor: 'pointer'};
+        imgStyle = {objectFit:'unset'};
     }
 
     const imageViewer = isViewerOpen ? <SimpleImageViewer img={thumbnail} closeImageViewer={toggleImageViewer}/> : null;
@@ -53,7 +53,7 @@ const View = ({comic, navigate}) => {
     return(
         <>
             <div className="single-comics">
-                <img src={thumbnail} style={imgStyle} onClick={ () => toggleImageViewer() } alt={title}/>
+                <img src={thumbnail} style={{...imgStyle, cursor:"pointer"}} onClick={ () => toggleImageViewer() } alt={title}/>
                 <div className="single-comics__info">
                     <div className="single-comics__name">{title}</div>
                     <div className="single-comics__descr">{description}</div>
