@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/static/css/main.be71f293.css",
-    "main.js": "/static/js/main.49d97899.js",
+    "main.js": "/static/js/main.cdb60323.js",
     "static/media/deadpool.png": "/static/media/deadpool.e2031a1f8dcbb7109462.png",
     "static/media/bgdecoration.png": "/static/media/bgdecoration.7d2b8934160072a4348f.png",
     "static/media/Decoration.png": "/static/media/Decoration.e2713e75ad74569970c3.png",
@@ -9,10 +9,10 @@
     "static/media/Avengers-logo.png": "/static/media/Avengers-logo.826953c9a97b3e3d6b15.png",
     "index.html": "/index.html",
     "main.be71f293.css.map": "/static/css/main.be71f293.css.map",
-    "main.49d97899.js.map": "/static/js/main.49d97899.js.map"
+    "main.cdb60323.js.map": "/static/js/main.cdb60323.js.map"
   },
   "entrypoints": [
     "static/css/main.be71f293.css",
-    "static/js/main.49d97899.js"
+    "static/js/main.cdb60323.js"
   ]
 }
